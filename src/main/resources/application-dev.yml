@@ -1,0 +1,22 @@
+server:
+  port: 8085
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/succeed?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+  jpa:
+    open-in-view: false
+logging:
+  config:
+    classpath: logback-spring.xml
+  file:
+    path: F:\logs\springboots
+  pattern:
+    console: "[%d{yyyy-MM-dd HH:mm:ss}] -- [%-5p]: [%c] -- %m%n"
+    file: "[%d{yyyy-MM-dd HH:mm:ss}] -- [%-5p]: [%c] -- %m%n"
+yayatin:
+  url: http://api.yytianqi.com/weatherhours
+  city: 39.93,116.40
+  key: 346cd8kvr26rvr0s

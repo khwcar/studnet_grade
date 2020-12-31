@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.khw.studnet_grade.mapper.extend.TesMapper" >
+<!--    <resultMap id="grade" type="com.khw.studnet_grade.entity.StudentMark">-->
+<!--        <id column="sno" property="sno" javaType="INTEGER"/>-->
+<!--        <result column="sname" property="sname" javaType="VARCHAR"/>-->
+<!--        <result column="cname" property="cname" javaType="VARCHAR"/>-->
+<!--        <result column="score" property="score" javaType="VARCHAR"/>-->
+<!--    </resultMap>-->
+
+    <select id="SelectByAllStudentCourse" parameterType="java.util.Map" resultType="com.khw.studnet_grade.entity.pojo.StudentMark">
+        SELECT student.sno sno,student.sname sname,course.cname cname,score.score score
+        FROM student
+        LEFT JOIN score
+        ON student.sno = score.sno
+        LEFT JOIN course
+        on course.cno = score.cno
+        WHERE score between 60 and 100
+        and student.sno in
+        <foreach collection="customerIds"  item="item" separator="," open="(" close=")">
+            #{item,jdbcType=INTEGER}
+        </foreach>
+    </select>
+    <select id="selectBysnoBycno" parameterType="java.util.Map" resultType="com.khw.studnet_grade.entity.pojo.StudentMark">
+        SELECT student.sno,student.sname,course.cname,score.score from score
+        join student
+        on student.sno = score.sno
+        JOIN course
+        on course.cno = score.cno
+        <where>
+                score.sno = #{sno}
+            and score.cno in
+                <foreach collection="cno"  separator="," index="index" open="(" close=")" item="item">
+                    #{item}
+                </foreach>
+        </where>
+    </select>
+<!--    collection为list时-->
+    <select id="selectBysno" parameterType="java.util.List" resultType="com.khw.studnet_grade.entity.Student">
+        select *
+        from student
+        <where>
+            sno in
+                <foreach collection="list" separator="," item="item" open="(" close=")">
+                    #{item}
+                </foreach>
+        </where>
+    </select>
+<!--    collection为对应的sno时-->
+    <select id="selectBysnos" parameterType="java.util.List" resultType="com.khw.studnet_grade.entity.Student">
+        select *
+        from student
+        <where>
+            sno in
+            <foreach collection="sno" separator="," item="item" open="(" close=")">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+</mapper>
